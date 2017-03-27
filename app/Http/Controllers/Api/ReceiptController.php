@@ -106,20 +106,20 @@ class ReceiptController extends ApiController
         $json = \GuzzleHttp\json_decode($signed_data, true);
         if($json['packageName'] == self::ANDROID_PACKAGE_NAME && $json['productId'] == self::ANDROID_PRODUCT_ID) {
 
-            $transaction_id = $json['purchaseTime'] . '_' . $json['developerPayload'];
-            //kiem tra neu co roi thi khong insert nua
-            $checkExist = $this->_inapp->findWhere(['transaction_id' => $transaction_id])->first();
-
-            if (empty($checkExist)) {
-                $this->_inapp->create([
-                    'transaction_id' => $transaction_id,
-                    'receipt' => json_encode($json),
-                    'os' => self::OS_ANDROID
-                ]);
-            }
             $verify = $this->verify_market_in_app($signed_data, $signature, self::ANDROID_PUBLIC_KEY);
             if($verify) {
                 $response = array('status' => 1, 'message' => 'verify success');
+                $transaction_id = $json['purchaseTime'] . '_' . $json['developerPayload'];
+                //kiem tra neu co roi thi khong insert nua
+                $checkExist = $this->_inapp->findWhere(['transaction_id' => $transaction_id])->first();
+
+                if (empty($checkExist)) {
+                    $this->_inapp->create([
+                        'transaction_id' => $transaction_id,
+                        'receipt' => json_encode($json),
+                        'os' => self::OS_ANDROID
+                    ]);
+                }
             }
         }
 
