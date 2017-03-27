@@ -13,7 +13,8 @@
         "prettus/l5-repository": "^2.6",
         "rap2hpoutre/laravel-log-viewer": "^0.8.0",
         "google/apiclient": "^2.0",
-        "kayac/sheet": "1.6.x@dev"
+        "kayac/sheet": "1.6.x@dev",
+        "james-heinrich/getid3": "^1.9"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

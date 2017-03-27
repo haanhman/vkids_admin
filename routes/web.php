@@ -28,6 +28,9 @@ Route::group(['middleware' => ['user_language', 'auth', 'user_permission']], fun
     Route::get('player', 'PlayerController@index')->name('player.index');
     Route::delete('player/{id}/lock', 'PlayerController@lock')->name('player.lock');
     Route::get('master-data', 'MasterDataController@index')->name('masterdata.index');
+    Route::get('json', 'JsonController@index');
+    Route::post('json', 'JsonController@createJson')->name('json.create');
+    Route::get('zipfile', 'JsonController@zipFile');
 });
 
 Route::get('demo', 'DemoController@index');
