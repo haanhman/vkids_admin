@@ -19,7 +19,7 @@ class ReceiptController extends ApiController
 
     //android
     const ANDROID_PACKAGE_NAME = 'com.sonman.inappdemo';
-    const ANDROID_PRODUCT_ID = 'com.sonman.inappdemo.goi8';
+    const ANDROID_PRODUCT_ID = 'com.sonman.inappdemo.goi9';
     const ANDROID_PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApeoELU1M81j98Z9JRSvWtQ+avl/LGtcrWOYOHaDL1oG9J/QIeyqXI/2OTGMJuM6ac8W6JbpvgcnejPk4Jj27sXmiKK+RndMBCK8qJCbGnc/jCECNKcQPMW+ono5BKjuFFNYQxV8UHik9hi+or4afilOBGCAnfm5Jt7mKXJS7OKBAbhmud0FhgJLp0itar15VYrXgSHECqOTmHIoajK7dwOpBA9hDLFpo2dF56gL2WihPWqcbzJNZ2g0GJFu4nhJX2T1QHF3T94VFIddb/CZkL8ULcnQLLO9juFaQeS2X6MJJ0mDyP572LXJo3T5FMjj66N3Ar6+Q9NicBZlHajc72QIDAQAB';
     /**
      * @var InappPurchaseRepositoryEloquent
