@@ -41,7 +41,7 @@ class ReceiptController extends ApiController
         } else {
             $response = ['status' => 0, 'message' => 'verify receipt fail.'];
         }
-        return json_encode($response);
+        return $this->responseData($response);
     }
 
     private function verifyWithApple($data)
@@ -95,12 +95,6 @@ class ReceiptController extends ApiController
         $signed_data = $data['signed_data'];
         $signature = $data['signature'];
 
-//        $content = file_get_contents(storage_path() . '/android.json');
-//        $content = file_get_contents(storage_path() . '/hack_android.json');
-//        $content = \GuzzleHttp\json_decode($content, true);
-//        $signed_data = $content['signed_data'];
-//        $signature = $content['signature'];
-
         $response = array('status' => 0, 'message' => 'WTF: hacking');
 
         $json = \GuzzleHttp\json_decode($signed_data, true);
@@ -122,8 +116,7 @@ class ReceiptController extends ApiController
                 }
             }
         }
-
-        return json_encode($response);
+        return $this->responseData($response);
     }
 
     function verify_market_in_app($signed_data, $signature, $public_key_base64)
