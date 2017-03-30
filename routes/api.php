@@ -13,11 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
-
+//Route::get('/user', function (Request $request) {
+//    return $request->user();
+//})->middleware('auth:api');
+//
 Route::group(['namespace' => 'Api'], function () {
     Route::post('receipt/verify', 'ReceiptController@verifyReceiptIOS');
     Route::post('receipt/android', 'ReceiptController@android');
+    Route::get('index/rate', 'IndexController@showRateApp');
 });

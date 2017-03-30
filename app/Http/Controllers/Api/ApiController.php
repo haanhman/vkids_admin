@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\LoggerService;
+use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use App\Http\Controllers\Controller;
@@ -25,4 +26,10 @@ class ApiController extends Controller
         $this->_request = $router->getCurrentRequest();
         $this->_logger = new LoggerService($this->_loggerVersion);
     }
+
+    public function responseData($response) {
+        return json_encode($response);
+    }
+
+
 }
