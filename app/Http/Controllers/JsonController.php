@@ -117,7 +117,7 @@ class JsonController extends MyController
                 }
 
                 $end_word = 0;
-                if(strtolower($letter) == 'x' && (strtolower($cardName) == 'fox' | strtolower($cardName) == 'box')) {
+                if (strtolower($letter) == 'x' && (strtolower($cardName) == 'fox' | strtolower($cardName) == 'box')) {
                     $end_word = 1;
                 }
 
@@ -144,8 +144,8 @@ class JsonController extends MyController
         $dir = new \DirectoryIterator($path);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot() && $fileinfo->isFile() && $fileinfo->getFilename() != '.DS_Store') {
-                if($fullPath) {
-                    $data[] = $path . '/' .$fileinfo->getFilename();
+                if ($fullPath) {
+                    $data[] = $path . '/' . $fileinfo->getFilename();
                 } else {
                     $data[] = $fileinfo->getFilename();
                 }
@@ -155,10 +155,11 @@ class JsonController extends MyController
         return $data;
     }
 
-    private function getZipName($letter) {
+    private function getZipName($letter)
+    {
         $str = 'abcdefghijklmnopqrstuvwxyz';
         $list = array();
-        for($i = 0; $i < strlen($str); $i++) {
+        for ($i = 0; $i < strlen($str); $i++) {
             $check = hash_hmac('sha256', $str[$i], self::MY_SERVICE_PRIVATE_KEY);
             $list[$str[$i]] = strtolower($check);
         }
@@ -166,36 +167,54 @@ class JsonController extends MyController
 
     }
 
-    public function zipFile() {
+    public function zipFile()
+    {
         $letter = $_GET['letter'];
         $paths = $this->getMediaInfo($letter, true);
-        if(empty($paths)) {
-           die('khong co noi dung');
+        if (empty($paths)) {
+            die('khong co noi dung');
         }
         $zipf = storage_path() . '/zip/' . $this->getZipName($letter) . '.zip';
-        if(file_exists($zipf)) {
+        if (file_exists($zipf)) {
             @unlink($zipf);
         }
         $zip = new \ZipArchive();
         $zip->open($zipf, \ZipArchive::CREATE);
-        foreach($paths as $path) {
+        foreach ($paths as $path) {
             $arr = explode('.', $path);
             $ext = array_pop($arr);
             $arrPath = explode('/', $path);
             $lastPath = array_pop($arrPath);
             $dest = '';
-            if($ext == 'mp3') {
+
+            if($ext == 'png') {
+                $info = getimagesize($path);
+                if($info[1] != 250) {
+                    die('anh: ' . $path . ' co loi');
+                }
+            }
+
+            if ($ext == 'mp3') {
                 $dest = 'resources/Sound/card/' . $lastPath;
-            }elseif($ext == 'png' | $ext == 'json') {
+            } elseif ($ext == 'png' | $ext == 'json') {
                 $dest = 'resources/cards/' . $lastPath;
-            }elseif($ext == 'mp4') {
+            } elseif ($ext == 'mp4') {
                 $dest = 'resources/video/' . $lastPath;
             }
             $zip->addFile($path, $dest);
         }
         $zip->close();
-        echo '<h1>'.$letter.'</h1><br />';
+        echo '<h1>' . $letter . '</h1><br />';
         echo $zipf . '<br />';
+    }
+
+    public function createZip()
+    {
+        $version = time();
+        $arr = range('e', 'z');
+        foreach ($arr as $letter) {
+            echo '<a href="/zipfile?letter=' . $letter . '&ver='.$version.'" target="_blank">' . strtoupper($letter) . '</a><br />';
+        }
     }
 
 }
