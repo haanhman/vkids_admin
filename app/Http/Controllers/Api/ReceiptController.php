@@ -18,9 +18,9 @@ class ReceiptController extends ApiController
     const IOS_PRODUCTION_URL = 'https://buy.itunes.apple.com/verifyReceipt';
 
     //android
-    const ANDROID_PACKAGE_NAME = 'com.sonman.inappdemo';
-    const ANDROID_PRODUCT_ID = 'com.sonman.inappdemo.fullcontent';
-    const ANDROID_PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApeoELU1M81j98Z9JRSvWtQ+avl/LGtcrWOYOHaDL1oG9J/QIeyqXI/2OTGMJuM6ac8W6JbpvgcnejPk4Jj27sXmiKK+RndMBCK8qJCbGnc/jCECNKcQPMW+ono5BKjuFFNYQxV8UHik9hi+or4afilOBGCAnfm5Jt7mKXJS7OKBAbhmud0FhgJLp0itar15VYrXgSHECqOTmHIoajK7dwOpBA9hDLFpo2dF56gL2WihPWqcbzJNZ2g0GJFu4nhJX2T1QHF3T94VFIddb/CZkL8ULcnQLLO9juFaQeS2X6MJJ0mDyP572LXJo3T5FMjj66N3Ar6+Q9NicBZlHajc72QIDAQAB';
+    const ANDROID_PACKAGE_NAME = 'com.kidsapp.abcphonic.learnhandwriting';
+    const ANDROID_PRODUCT_ID = 'com.kidsapp.abcphonic.learnhandwriting.fullcontent';
+    const ANDROID_PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkAhgQ9YQZFimEVDD2/vkZE7ZsZLELj+hKp5IoWK6ACiMY2YU1s/Fc3rMMy5a3MVzWP36g3gKgQYHCrALGENGY7Anpxjy5sSQ6p85NxduJagO9viaqoA4alrkBmQz1j9KWUgKT4hJCGhxNuLa+apRN5p73Z5UraAFWQg804pyxcAsrOrAbeFShJv2Jgw3Jy7h5/eI4b4A6KFJAKdsIwFQYM1qhMDPWu7O5tdt45Raibnv5dNitXOr7qJDdlwUOp+1kgfi0JBQEe1XYRknWAnt37Ro+cWZONAw0BBIJzntkUPASsamwEzC/lBsrjSHPV0rUerU8BXLHfApOvPAZdPEdQIDAQAB';
     /**
      * @var InappPurchaseRepositoryEloquent
      */
