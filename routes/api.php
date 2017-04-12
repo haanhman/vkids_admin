@@ -21,4 +21,5 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('receipt/verify', 'ReceiptController@verifyReceiptIOS');
     Route::post('receipt/android', 'ReceiptController@android');
     Route::get('index/rate', 'IndexController@showRateApp');
+    Route::post('download', 'DownloadController@index');
 });
