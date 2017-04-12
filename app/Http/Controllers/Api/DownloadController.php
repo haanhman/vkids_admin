@@ -43,8 +43,7 @@ class DownloadController extends ApiController
         } else {
             $url = $this->getLinkGitHub($filename);
         }
-
-        $url = $this->getLinkFirebase($filename);
+        
         $response = array('status' => 1, 'url' => $url);
         return $this->responseData($response);
     }
