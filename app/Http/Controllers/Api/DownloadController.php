@@ -26,7 +26,7 @@ class DownloadController extends ApiController
     public function index()
     {
         $filename = $this->_request->get('filename', '');
-        $sv = $this->_request->get('sv', self::SERVER_GITHUB);
+        $sv = $this->_request->get('sv', self::SERVER_FIREBASE);
         if (empty($filename)) {
             $response = array('status' => -1, 'msg' => 'File not found!');
             return $this->responseData($response);
