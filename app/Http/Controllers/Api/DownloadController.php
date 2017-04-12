@@ -38,14 +38,13 @@ class DownloadController extends ApiController
             return $this->responseData($response);
         }
 
-        if ($sv == self::SERVER_DROPBOX) {
-            $url = $this->getLinkDropBox($filename);
-        } else if ($sv == self::SERVER_GITHUB) {
-            $url = $this->getLinkGitHub($filename);
-        } else {
+        if ($sv == self::SERVER_FIREBASE) {
             $url = $this->getLinkFirebase($filename);
+        } else {
+            $url = $this->getLinkGitHub($filename);
         }
 
+        $url = $this->getLinkFirebase($filename);
         $response = array('status' => 1, 'url' => $url);
         return $this->responseData($response);
     }
