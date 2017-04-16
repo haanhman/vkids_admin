@@ -31,7 +31,7 @@ Route::group(['middleware' => ['user_language', 'auth', 'user_permission']], fun
     Route::get('json', 'JsonController@index');
     Route::post('json', 'JsonController@createJson')->name('json.create');
     Route::get('zipfile', 'JsonController@zipFile');
-    Route::get('zip', 'JsonController@createZip');
+    Route::get('zip-index', 'JsonController@createZip');
 });
 
 Route::get('demo', 'DemoController@index');

@@ -110,6 +110,15 @@ class JsonController extends MyController
             $json = array(
                 'text' => strtoupper($letter)
             );
+
+            foreach ($images as $cardName => $list) {
+                foreach($list as $index => $img) {
+                    if($cardName . ($index+1) . '.png' != $img) {
+                        die($cardName. ' loi anh');
+                    }
+                }
+            }
+
             foreach ($images as $cardName => $list) {
                 $ThisFileInfo = $getID3->analyze(storage_path() . '/img/' . $letter . '/' . $cardName . '.mp3');
                 if ($ThisFileInfo['playtime_seconds'] <= 0) {
@@ -137,7 +146,7 @@ class JsonController extends MyController
 
     }
 
-    private function scanFolder($folder, &$paths)
+    private function scanFolder($folder, &$paths, $fullPath = false)
     {
         if (!is_dir($folder)) {
             return array();
@@ -145,7 +154,11 @@ class JsonController extends MyController
         $dir = new \DirectoryIterator($folder);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot() && $fileinfo->isFile()) {
-                $p = $folder . '/' . $fileinfo->getFilename();
+                if($fullPath) {
+                    $p = $folder . '/' . $fileinfo->getFilename();
+                } else {
+                    $p = $fileinfo->getFilename();
+                }
                 if (strpos($p, '__MACOSX') !== false | strpos($p, '.DS_Store') !== false) {
                     continue;
                 }
@@ -153,7 +166,7 @@ class JsonController extends MyController
             } elseif (!$fileinfo->isDot() && $fileinfo->isDir()) {
                 $d = $fileinfo->getFilename();
                 $fd = $folder . '/' . $d;
-                $this->scanFolder($fd, $paths);
+                $this->scanFolder($fd, $paths,$fullPath);
             }
         }
     }
@@ -164,7 +177,7 @@ class JsonController extends MyController
         $path = storage_path() . '/img/' . $folder;
         $data = array();
 
-        $this->scanFolder($path, $data);
+        $this->scanFolder($path, $data, $fullPath);
         return $data;
     }
 

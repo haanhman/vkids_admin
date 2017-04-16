@@ -87,9 +87,9 @@ class DownloadController extends ApiController
     {
         $servers = array(
             "https://vkidsdata.firebaseapp.com",
-//            "https://vkidsdata2.firebaseapp.com",
-//            "https://vkidsdata3.firebaseapp.com",
-//            "https://vkidsdata4.firebaseapp.com"
+            "https://vkidsdata2.firebaseapp.com",
+            "https://vkidsdata3.firebaseapp.com",
+            "https://vkidsdata4.firebaseapp.com"
         );
         $svIndex = array_rand($servers, 1);
         return $servers[$svIndex] . '/zip/' . $filename . '.zip';
