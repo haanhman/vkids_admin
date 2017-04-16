@@ -137,21 +137,34 @@ class JsonController extends MyController
 
     }
 
+    private function scanFolder($folder, &$paths)
+    {
+        if (!is_dir($folder)) {
+            return array();
+        }
+        $dir = new \DirectoryIterator($folder);
+        foreach ($dir as $fileinfo) {
+            if (!$fileinfo->isDot() && $fileinfo->isFile()) {
+                $p = $folder . '/' . $fileinfo->getFilename();
+                if (strpos($p, '__MACOSX') !== false | strpos($p, '.DS_Store') !== false) {
+                    continue;
+                }
+                $paths[] = $p;
+            } elseif (!$fileinfo->isDot() && $fileinfo->isDir()) {
+                $d = $fileinfo->getFilename();
+                $fd = $folder . '/' . $d;
+                $this->scanFolder($fd, $paths);
+            }
+        }
+    }
+
+
     private function getMediaInfo($folder, $fullPath = false)
     {
         $path = storage_path() . '/img/' . $folder;
         $data = array();
-        $dir = new \DirectoryIterator($path);
-        foreach ($dir as $fileinfo) {
-            if (!$fileinfo->isDot() && $fileinfo->isFile() && $fileinfo->getFilename() != '.DS_Store') {
-                if ($fullPath) {
-                    $data[] = $path . '/' . $fileinfo->getFilename();
-                } else {
-                    $data[] = $fileinfo->getFilename();
-                }
 
-            }
-        }
+        $this->scanFolder($path, $data);
         return $data;
     }
 
@@ -174,6 +187,7 @@ class JsonController extends MyController
         if (empty($paths)) {
             die('khong co noi dung');
         }
+
         $zipf = storage_path() . '/zip/' . $this->getZipName($letter) . '.zip';
         if (file_exists($zipf)) {
             @unlink($zipf);
@@ -187,15 +201,21 @@ class JsonController extends MyController
             $lastPath = array_pop($arrPath);
             $dest = '';
 
-            if($ext == 'png') {
+            if ($ext == 'png') {
                 $info = getimagesize($path);
-                if($info[1] != 250) {
+                if ($info[1] != 250) {
                     die('anh: ' . $path . ' co loi');
                 }
             }
 
             if ($ext == 'mp3') {
-                $dest = 'resources/Sound/card/' . $lastPath;
+                if (strpos($path, '/gametouch/') !== false) {
+                    $dest = 'resources/Sound/gametouch/' . $lastPath;
+                } elseif (strpos($path, '/groupaudio/') !== false) {
+                    $dest = 'resources/groupaudio/' . $lastPath;
+                } else {
+                    $dest = 'resources/Sound/card/' . $lastPath;
+                }
             } elseif ($ext == 'png' | $ext == 'json') {
                 $dest = 'resources/cards/' . $lastPath;
             } elseif ($ext == 'mp4') {
@@ -213,7 +233,7 @@ class JsonController extends MyController
         $version = time();
         $arr = range('e', 'z');
         foreach ($arr as $letter) {
-            echo '<a href="/zipfile?letter=' . $letter . '&ver='.$version.'" target="_blank">' . strtoupper($letter) . '</a><br />';
+            echo '<a href="/zipfile?letter=' . $letter . '&ver=' . $version . '" target="_blank">' . strtoupper($letter) . '</a><br />';
         }
     }
 
