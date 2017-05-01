@@ -79,6 +79,7 @@ class ReceiptController extends ApiController
 
                 if (empty($checkExist)) {
                     $this->_inapp->create([
+                        'app_name' => $this->appName,
                         'transaction_id' => $transaction_id,
                         'receipt' => json_encode($response),
                         'os' => $this->OS_IOS
