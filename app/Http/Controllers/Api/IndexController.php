@@ -13,6 +13,13 @@ class IndexController extends ApiController
         return $this->responseData($response);
     }
 
+    public function showRateAppNumber()
+    {
+        $china = $this->detechChina();
+        $response = array('status' => 1, 'rate' => 0, 'china' => $china);
+        return $this->responseData($response);
+    }
+
     /**
      * lay IP cua client
      * - hien server lom dung tam ham nay

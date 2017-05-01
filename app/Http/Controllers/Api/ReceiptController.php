@@ -9,18 +9,20 @@ use Illuminate\Routing\Router;
 
 class ReceiptController extends ApiController
 {
+    protected $appName = '';
+    protected $OS_IOS = 1;
+    protected $OS_ANDROID = 2;
+    protected $IOS_SANDBOX_URL = 'https://sandbox.itunes.apple.com/verifyReceipt';
+    protected $IOS_PRODUCTION_URL = 'https://buy.itunes.apple.com/verifyReceipt';
 
-    const OS_IOS = 1;
-    const OS_ANDROID = 2;
-    const IOS_BUNDLE_ID = 'com.vkids.abcsong';
-    const IOS_PRODUCT_ID = 'com.vkids.abcsong.fullcontent';
-    const IOS_SANDBOX_URL = 'https://sandbox.itunes.apple.com/verifyReceipt';
-    const IOS_PRODUCTION_URL = 'https://buy.itunes.apple.com/verifyReceipt';
+
+    protected $IOS_BUNDLE_ID = '';
+    protected $IOS_PRODUCT_ID = '';
 
     //android
-    const ANDROID_PACKAGE_NAME = 'com.kidsapp.abcphonic.learnhandwriting';
-    const ANDROID_PRODUCT_ID = 'com.kidsapp.abcphonic.learnhandwriting.fullcontent';
-    const ANDROID_PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkAhgQ9YQZFimEVDD2/vkZE7ZsZLELj+hKp5IoWK6ACiMY2YU1s/Fc3rMMy5a3MVzWP36g3gKgQYHCrALGENGY7Anpxjy5sSQ6p85NxduJagO9viaqoA4alrkBmQz1j9KWUgKT4hJCGhxNuLa+apRN5p73Z5UraAFWQg804pyxcAsrOrAbeFShJv2Jgw3Jy7h5/eI4b4A6KFJAKdsIwFQYM1qhMDPWu7O5tdt45Raibnv5dNitXOr7qJDdlwUOp+1kgfi0JBQEe1XYRknWAnt37Ro+cWZONAw0BBIJzntkUPASsamwEzC/lBsrjSHPV0rUerU8BXLHfApOvPAZdPEdQIDAQAB';
+    protected $ANDROID_PACKAGE_NAME = '';
+    protected $ANDROID_PRODUCT_ID = '';
+    protected $ANDROID_PUBLIC_KEY = '';
     /**
      * @var InappPurchaseRepositoryEloquent
      */
@@ -46,7 +48,7 @@ class ReceiptController extends ApiController
 
     private function verifyWithApple($data)
     {
-        $ch = curl_init((isset($_GET['debug']) && $_GET['debug'] == 1) ? self::IOS_SANDBOX_URL : self::IOS_PRODUCTION_URL);
+        $ch = curl_init((isset($_GET['debug']) && $_GET['debug'] == 1) ? $this->IOS_SANDBOX_URL : $this->IOS_PRODUCTION_URL);
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -69,7 +71,7 @@ class ReceiptController extends ApiController
         if ($response['status'] == 0) {
             $receipt = $response['receipt'];
             $in_app = array_shift($receipt['in_app']);
-            if ($receipt['bundle_id'] == self::IOS_BUNDLE_ID && $in_app['product_id'] == self::IOS_PRODUCT_ID) {
+            if ($receipt['bundle_id'] == $this->IOS_BUNDLE_ID && $in_app['product_id'] == $this->IOS_PRODUCT_ID) {
                 //save to database
                 //kiem tra neu co roi thi khong insert nua
                 $transaction_id = $in_app['transaction_id'];
@@ -79,7 +81,7 @@ class ReceiptController extends ApiController
                     $this->_inapp->create([
                         'transaction_id' => $transaction_id,
                         'receipt' => json_encode($response),
-                        'os' => self::OS_IOS
+                        'os' => $this->OS_IOS
                     ]);
                 }
                 return true;
@@ -98,9 +100,9 @@ class ReceiptController extends ApiController
         $response = array('status' => 0, 'message' => 'WTF: hacking');
 
         $json = \GuzzleHttp\json_decode($signed_data, true);
-        if($json['packageName'] == self::ANDROID_PACKAGE_NAME && $json['productId'] == self::ANDROID_PRODUCT_ID) {
+        if($json['packageName'] == $this->ANDROID_PACKAGE_NAME && $json['productId'] == $this->ANDROID_PRODUCT_ID) {
 
-            $verify = $this->verify_market_in_app($signed_data, $signature, self::ANDROID_PUBLIC_KEY);
+            $verify = $this->verify_market_in_app($signed_data, $signature, $this->ANDROID_PUBLIC_KEY);
             if($verify) {
                 $response = array('status' => 1, 'message' => 'verify success');
                 $transaction_id = $json['purchaseTime'] . '_' . $json['developerPayload'];
@@ -109,9 +111,10 @@ class ReceiptController extends ApiController
 
                 if (empty($checkExist)) {
                     $this->_inapp->create([
+                        'app_name' => $this->appName,
                         'transaction_id' => $transaction_id,
                         'receipt' => json_encode($json),
-                        'os' => self::OS_ANDROID
+                        'os' => $this->OS_ANDROID
                     ]);
                 }
             }
@@ -143,5 +146,4 @@ class ReceiptController extends ApiController
             return true;
         }
     }
-
 }
