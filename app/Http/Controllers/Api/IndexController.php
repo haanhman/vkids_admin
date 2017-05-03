@@ -9,14 +9,14 @@ class IndexController extends ApiController
     public function showRateApp()
     {
         $china = $this->detechChina();
-        $response = array('status' => 1, 'rate' => 0, 'china' => $china);
+        $response = array('status' => 1, 'rate' => 1, 'china' => $china);
         return $this->responseData($response);
     }
 
     public function showRateAppNumber()
     {
         $china = $this->detechChina();
-        $response = array('status' => 1, 'rate' => 0, 'china' => $china);
+        $response = array('status' => 1, 'rate' => 1, 'china' => $china);
         return $this->responseData($response);
     }
 
