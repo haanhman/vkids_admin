@@ -19,8 +19,8 @@ use Illuminate\Http\Request;
 //
 Route::group(['namespace' => 'Api'], function () {
     //abc song
-    Route::post('receipt/verify', 'ReceiptController@verifyReceiptIOS');
-    Route::post('receipt/android', 'ReceiptController@android');
+    Route::post('receipt/verify', 'AbcController@verifyReceiptIOS');
+    Route::post('receipt/android', 'AbcController@android');
     //123 numbers
     Route::post('receipt/number-ios', 'NumberController@verifyReceiptIOS');
     Route::post('receipt/number-android', 'NumberController@android');
