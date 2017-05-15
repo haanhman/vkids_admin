@@ -15,6 +15,8 @@ class DemoController extends MyController
     }
 
     public function index() {
+        echo date('d/m/Y H:i:s');
+        die;
         $str = 'abcdefghijklmnopqrstuvwxyz';
         $list = array();
         for($i = 0; $i < strlen($str); $i++) {
