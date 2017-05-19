@@ -76,9 +76,10 @@ class ReceiptController extends ApiController
                 //kiem tra neu co roi thi khong insert nua
                 $transaction_id = $in_app['transaction_id'];
                 $checkExist = $this->_inapp->findWhere(['transaction_id' => $transaction_id])->first();
-
                 if (empty($checkExist)) {
+                    $ipAddress = $this->ipAddress();
                     $this->_inapp->create([
+                        'ip_address' => $ipAddress,
                         'app_name' => $this->appName,
                         'transaction_id' => $transaction_id,
                         'receipt' => json_encode($response),
@@ -111,7 +112,9 @@ class ReceiptController extends ApiController
                 $checkExist = $this->_inapp->findWhere(['transaction_id' => $transaction_id])->first();
 
                 if (empty($checkExist)) {
+                    $ipAddress = $this->ipAddress();
                     $this->_inapp->create([
+                        'ip_address' => $ipAddress,
                         'app_name' => $this->appName,
                         'transaction_id' => $transaction_id,
                         'receipt' => json_encode($json),

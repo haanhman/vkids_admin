@@ -31,5 +31,30 @@ class ApiController extends Controller
         return json_encode($response);
     }
 
+    /**
+     * lay IP cua client
+     * - hien server lom dung tam ham nay
+     * - khi nao server hon thi dung ham cua drupal core: ip_address()
+     * @staticvar string $ip_address
+     * @return string
+     */
+    protected function ipAddress()
+    {
+        $ip_address = NULL;
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip_address_parts = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            foreach ($ip_address_parts as $ip) {
+                if ($ip != '127.0.0.1') {
+                    $ip_address = $ip;
+                    break;
+                }
+            }
+        } else {
+            $ip_address = $_SERVER['REMOTE_ADDR'];
+        }
+
+        return $ip_address;
+    }
+
 
 }
