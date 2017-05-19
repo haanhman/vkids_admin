@@ -25,6 +25,6 @@ class InappPurchase extends Model implements Transformable
 {
     use TransformableTrait;
     protected $table = 'inapp_purchase';
-    protected $fillable = ['transaction_id', 'receipt', 'os', 'app_name'];
+    protected $fillable = ['transaction_id', 'receipt', 'os', 'app_name', 'ip_address'];
 
 }
